@@ -26,8 +26,8 @@ public string materialsFolder; // A variable with [Folder] must be a string.
 
 void Start()
 {
-// Get the content of the folder!
-  Material[] materials = materialsFolder.LoadFolder<Material>();
+    // Get the content of the folder!
+    Material[] materials = materialsFolder.LoadFolder<Material>();
 }
 ```
 
