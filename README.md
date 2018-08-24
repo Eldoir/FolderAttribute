@@ -1,8 +1,8 @@
 # FolderAttribute
 
 And NOW you can reference folders into Unity's Inspector.
-That's what I've been waiting for years, until I decided to code it myself!
-Enjoy :D
+
+That's what I've been waiting for years, until I decided to code it myself! Enjoy :D
 
 ## Getting Started
 
@@ -26,7 +26,8 @@ public string materialsFolder; // A variable with [Folder] must be a string.
 
 void Start()
 {
-	Material[] materials = materialsFolder.LoadFolder<Material>(); // Get the content of the folder!
+// Get the content of the folder!
+  Material[] materials = materialsFolder.LoadFolder<Material>();
 }
 ```
 
