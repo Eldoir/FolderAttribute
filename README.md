@@ -6,7 +6,7 @@ That's what I've been waiting for years, until I decided to code it myself! Enjo
 
 ## Getting Started
 
-For a quick import into an existing project, just get the UnityPackage.
+For a quick import into an existing project, just get the [UnityPackage](FolderAttributePackage.unitypackage).
 
 The FolderAttribute folder is an empty project with only the plugin imported and some examples! :)
 
