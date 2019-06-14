@@ -21,6 +21,8 @@ Everything comes into a few files (and most of them are used for demo).
 ## Code Usage
 
 ```csharp
+using Extensions;
+
 [Folder]
 public string materialsFolder; // A variable with [Folder] must be a string.
 
