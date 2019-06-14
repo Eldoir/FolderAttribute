@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Extensions;
 
 public class ExampleScript : MonoBehaviour
 {
