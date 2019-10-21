@@ -43,11 +43,3 @@ void Start()
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Going further...
-
-We could do many things on top of this.
-
-For example:
-
-- Use the GUID of the folder in addition to its path, to keep track of the folder even if it's renamed or moved elsewhere.
