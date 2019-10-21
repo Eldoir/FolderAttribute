@@ -12,12 +12,6 @@ The FolderAttribute folder is an empty project with only the plugin imported and
 
 See the [Code Usage](#code-usage) for details on how to use it in your project.
 
-## Prerequisites
-
-There are absolutely no prerequisites to this plugin.
-
-Everything comes into a few files (and most of them are used for demo).
-
 ## Code Usage
 
 ```csharp
