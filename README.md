@@ -33,7 +33,7 @@ void Start()
 
 ## Notes
 
-* Last tested with [Unity 2019.1.0f2](https://unity3d.com/unity/whatsnew/unity-2019.1.0) from 15 April 2019.
+* Last tested with [Unity 2019.1.0f2](https://unity3d.com/unity/whats-new/2019.1.0) from 15 April 2019.
 
 ## Authors
 
