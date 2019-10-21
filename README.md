@@ -15,7 +15,7 @@ See the [Code Usage](#code-usage) for details on how to use it in your project.
 ## Code Usage
 
 ```csharp
-using Extensions;
+using Folder; // Don't forget this.
 
 [Folder]
 public string materialsFolder; // A variable with [Folder] must be a string.
@@ -33,7 +33,7 @@ void Start()
 
 ## Notes
 
-* Last tested with [Unity 2018.2.1f1](https://unity3d.com/unity/whatsnew/unity-2018.2.1).
+* Last tested with [Unity 2019.1.0f2](https://unity3d.com/unity/whatsnew/unity-2019.1.0) from 15 April 2019.
 
 ## Authors
 

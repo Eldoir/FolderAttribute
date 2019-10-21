@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Extensions
+namespace Folder
 {
 	public static class StringExtensions
 	{

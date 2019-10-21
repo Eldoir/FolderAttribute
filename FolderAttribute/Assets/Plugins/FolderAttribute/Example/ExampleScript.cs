@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Extensions;
+using Folder;
 
 public class ExampleScript : MonoBehaviour
 {
