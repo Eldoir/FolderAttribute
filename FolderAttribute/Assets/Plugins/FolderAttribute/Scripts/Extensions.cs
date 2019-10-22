@@ -14,6 +14,11 @@ namespace Folder
 			return str.Substring(0, str.LastIndexOf("/") + 1);
 		}
 
+        public static FolderInfo ToFolderInfo(this string str)
+        {
+            return JsonUtility.FromJson<FolderInfo>(str);
+        }
+
 		/// <summary>
 		/// Remember that the folder must be located in Resources.
 		/// </summary>
@@ -21,16 +26,32 @@ namespace Folder
 		{
 			string resourcesFolder = "Resources/";
 
-			if (str.IndexOf(resourcesFolder) == -1) // Ensure the path is in Resources.
+            FolderInfo folder = str.ToFolderInfo();
+
+			if (folder.path.IndexOf(resourcesFolder) == -1) // Ensure the path is in Resources.
 			{
-				Debug.LogError("The folder at path " + str + " must be located in Resources if you want to load it.");
+				Debug.LogError("The folder at path " + folder.path + " must be located in Resources if you want to load it.");
 				return null;
 			}
 
-			// We remove the part of the path that is before Resources
-			str = str.Substring(str.LastIndexOf(resourcesFolder) + resourcesFolder.Length);
+            // We remove the part of the path that is before Resources
+            folder.path = folder.path.Substring(folder.path.LastIndexOf(resourcesFolder) + resourcesFolder.Length);
 
-			return Resources.LoadAll<T>(str);
+            T[] resources = Resources.LoadAll<T>(folder.path);
+
+            if (resources == null || resources.Length == 0) // Maybe the folder was renamed or deleted?
+            {
+                FolderInfo folderInfo = FolderInternal.Utils.GetFolderWithGUID(folder.guid);
+
+                if (folderInfo != null) // Indeed, we found it in the file changes!
+                {
+                    folder.path = folderInfo.path; // Update with new path
+                    folder.path = folder.path.Substring(folder.path.LastIndexOf(resourcesFolder) + resourcesFolder.Length);
+                    resources = Resources.LoadAll<T>(folder.path);
+                }
+            }
+
+            return resources;
 		}
 	}
 

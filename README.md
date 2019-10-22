@@ -27,6 +27,11 @@ void Start()
 }
 ```
 
+## Warning
+
+If you've made some __changes__ to folders that are referenced in the inspector via FolderAttribute (like __moving/renaming/deleting folders__), it's always a good practice to enter __Play mode__ to check you've not broken anything.
+Plus, it will update some references under-the-hood to ensure that your project can be shared with others without any broken reference.
+
 ## Screenshots
 
 ![Example 1](Screenshots/Example_1.PNG)

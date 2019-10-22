@@ -9,7 +9,7 @@ namespace FolderInternal
 {
     public static class Utils
     {
-        private const string dataFilename = "folderattribute_refs.txt";
+        private const string dataFilename = "folder_changes.txt";
         private static string dataFilepath { get { return Path.Combine(Application.persistentDataPath, dataFilename); } }
 
         private static List<FolderInfo> _folders;
@@ -45,7 +45,16 @@ namespace FolderInternal
         {
             CreateFoldersFileIfNotExists();
 
-            _folders.Add(new FolderInfo { path = filepath, guid = guid });
+            FolderInfo folderInfo = GetFolderWithGUID(guid);
+
+            if (folderInfo == null) // FolderInfo creation
+            {
+                folders.Add(new FolderInfo { path = filepath, guid = guid });
+            }
+            else // Simple path update
+            {
+                folderInfo.path = filepath;
+            }
 
             SaveFolders();
         }
@@ -81,13 +90,13 @@ namespace FolderInternal
             }
         }
 
-        private static FolderInfo GetFolderWithPath(string path)
+        public static FolderInfo GetFolderWithPath(string path)
         {
             CreateFoldersFileIfNotExists();
             return folders.FirstOrDefault(f => f.path == path);
         }
 
-        private static FolderInfo GetFolderWithGUID(string guid)
+        public static FolderInfo GetFolderWithGUID(string guid)
         {
             CreateFoldersFileIfNotExists();
             return folders.FirstOrDefault(f => f.guid == guid);
@@ -111,7 +120,7 @@ namespace FolderInternal
 
             for (int i = 0; i < lines.Length; i++)
             {
-                string[] folderInfos = lines[i].Split(' ');
+                string[] folderInfos = lines[i].Split(new char[] { ' ' }, 2, StringSplitOptions.None);
                 folders.Add(new FolderInfo { guid = folderInfos[0], path = folderInfos[1] });
             }
 

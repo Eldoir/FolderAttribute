@@ -4,15 +4,23 @@ class CustomAssetPostprocessor : AssetPostprocessor
 {
     static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
     {
-        if (deletedAssets.Length > 0)
+        if (movedAssets.Length > 0)
         {
-            foreach (string sourcePath in deletedAssets)
+            for (int i = 0; i < movedAssets.Length; i++)
             {
-                if (sourcePath.LastIndexOf("/") > sourcePath.LastIndexOf(".")) // It's a folder
+                string destinationPath = movedAssets[i];
+
+                if (IsFolder(destinationPath))
                 {
-                    FolderInternal.Utils.RemoveFolderWithPath(sourcePath);
+                    string guid = AssetDatabase.AssetPathToGUID(destinationPath);
+                    FolderInternal.Utils.RegisterNewFolder(destinationPath, guid);
                 }
             }
         }
+    }
+
+    static bool IsFolder(string sourcePath)
+    {
+        return sourcePath.LastIndexOf("/") > sourcePath.LastIndexOf(".");
     }
 }

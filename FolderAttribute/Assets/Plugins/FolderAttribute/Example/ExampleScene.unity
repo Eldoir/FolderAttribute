@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 164f486c444dca14f92e4f9357f7521f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialsFolder: Assets/Plugins/FolderAttribute/Example/Resources/ExampleFolder
+  materialsFolder: '{"guid":"23cde7676f817e24382534eecde474c2","path":"Assets/Plugins/FolderAttribute/Example/Resources/ExampleFolder"}'
 --- !u!4 &1102904357
 Transform:
   m_ObjectHideFlags: 0

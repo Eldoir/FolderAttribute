@@ -9,7 +9,7 @@ namespace Folder
        
     }
 
-    class FolderInfo
+    public class FolderInfo
     {
         public string guid;
         public string path;

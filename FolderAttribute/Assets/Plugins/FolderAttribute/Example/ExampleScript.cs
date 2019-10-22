@@ -30,7 +30,7 @@ public class ExampleScript : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No materials found.");
+            Debug.LogError("No materials found. ");
         }
     }
 }

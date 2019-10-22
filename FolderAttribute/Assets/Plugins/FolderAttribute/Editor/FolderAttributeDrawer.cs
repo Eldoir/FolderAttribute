@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.IO;
-using FolderInternal;
 
 namespace Folder
 {
@@ -32,46 +31,44 @@ namespace Folder
             else
             {
                 Object folder = null;
+                FolderInfo folderInfo = null;
 
                 if (!string.IsNullOrEmpty(property.stringValue))
                 {
-                    folder = AssetDatabase.LoadAssetAtPath(property.stringValue, typeof(DefaultAsset));
+                    folderInfo = property.stringValue.ToFolderInfo();
+                    folder = AssetDatabase.LoadAssetAtPath(folderInfo.path, typeof(DefaultAsset));
 
-                    if (folder != null) // The folder exists
+                    if (folder == null) // The folder has been moved, deleted, or renamed
                     {
-                        if (!Utils.FolderWithPathExists(property.stringValue)) // The folder isn't registered yet
+                        string newPath = AssetDatabase.GUIDToAssetPath(folderInfo.guid); // Try to retrieve from guid
+
+                        if (newPath != folderInfo.path)
                         {
-                            string guid = AssetDatabase.AssetPathToGUID(property.stringValue);
-                            Utils.RegisterNewFolder(property.stringValue, guid);
+                            folderInfo.path = newPath;
+                            folder = AssetDatabase.LoadAssetAtPath(folderInfo.path, typeof(DefaultAsset));
+                        }
+                        else // Retrieving from the guid led us to the same path: the file could not be found
+                        {
+                            Debug.LogWarning("The folder at path " + folderInfo.path + " could not be found. It has probably been deleted.");
+                            folderInfo = null; // Reset folderInfo
                         }
                     }
-                    else // The folder has been moved, deleted, or renamed
-                    {
-                        string guid = Utils.GetGUIDFromPath(property.stringValue, showError: false);
-
-                        if (!string.IsNullOrEmpty(guid))
-                        {
-                            string newPath = AssetDatabase.GUIDToAssetPath(guid); // The folder has been previously registered, we can recover it from its guid!
-                            Utils.UpdateFolderPath(guid, newPath);
-                            folder = AssetDatabase.LoadAssetAtPath(newPath, typeof(DefaultAsset));
-                        }
-                        else
-                        {
-                            Debug.LogError("The folder at path " + property.stringValue + " could not be found. It has probably been deleted.");
-                        }
-                    }
+                }
+                else // The property is unassigned yet
+                {
+                    //Debug.Log("unassigned");
                 }
 
                 folder = EditorGUI.ObjectField(objectPosition, folder, typeof(DefaultAsset), false);
 
                 string folderPathInAssets = AssetDatabase.GetAssetPath(folder);
-                TryUpdateProperty(folderPathInAssets, property);
+                TryUpdateProperty(folderPathInAssets, folderInfo, property);
             }
 
             EditorGUI.EndProperty();
         }
 
-        private void TryUpdateProperty(string folderPathInAssets, SerializedProperty property)
+        private void TryUpdateProperty(string folderPathInAssets, FolderInfo folderInfo, SerializedProperty property)
         {
             string folderPathOnPC = Application.dataPath.WithoutFileName() + folderPathInAssets;
 
@@ -81,7 +78,34 @@ namespace Folder
             }
             else
             {
-                property.stringValue = folderPathInAssets;
+                if (folderInfo == null)
+                {
+                    if (!string.IsNullOrEmpty(folderPathInAssets)) // First time we assign a folder
+                    {
+                        folderInfo = new FolderInfo { guid = AssetDatabase.AssetPathToGUID(folderPathInAssets), path = folderPathInAssets };
+                        property.stringValue = JsonUtility.ToJson(folderInfo);
+                    }
+                    else // Folder was deleted
+                    {
+                        property.stringValue = "";
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(folderPathInAssets)) // We just removed the reference
+                    {
+                        property.stringValue = "";
+                    }
+                    else if (folderPathInAssets != folderInfo.path) // We assigned a new folder
+                    {
+                        folderInfo = new FolderInfo { guid = AssetDatabase.AssetPathToGUID(folderPathInAssets), path = folderPathInAssets };
+                        property.stringValue = JsonUtility.ToJson(folderInfo);
+                    }
+                    else // We renamed the folder
+                    {
+                        property.stringValue = JsonUtility.ToJson(folderInfo);
+                    }
+                }
             }
         }
     }
